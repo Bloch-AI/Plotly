@@ -10,24 +10,28 @@ st.markdown("""
     <style>
     /* Import the Roboto font from Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    
     html, body, [class*="css"] {
         font-family: 'Roboto', sans-serif;
     }
     
-    /* Custom slider styling for WebKit browsers */
-    input[type="range"]::-webkit-slider-thumb {
-        background: #007BFF !important;
-    }
-    input[type="range"]::-webkit-slider-runnable-track {
-        background: #007BFF !important;
+    /* Modern browsers: use accent-color for range inputs (if Streamlit uses native input) */
+    input[type="range"] {
+        accent-color: #007BFF;
     }
     
-    /* Custom slider styling for Mozilla browsers */
-    input[type="range"]::-moz-range-thumb {
-        background: #007BFF !important;
+    /* Attempt to override Base Web slider styling used by Streamlit */
+    /* This targets slider elements rendered by Base Web (Streamlit’s slider) */
+    [data-baseweb="slider"] * {
+        /* These custom properties might influence slider colours in some versions */
+        --bds-primary: #007BFF !important;
+        --bds-accent: #007BFF !important;
     }
-    input[type="range"]::-moz-range-track {
-        background: #007BFF !important;
+    
+    /* Fallback: try targeting potential slider classes (class names may change) */
+    .stSlider .css-1544gdk,
+    .stSlider .css-1cuwqtl {
+        background-color: #007BFF !important;
     }
     </style>
 """, unsafe_allow_html=True)
