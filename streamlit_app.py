@@ -2,10 +2,16 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Set page configuration as the very first Streamlit command
+# IMPORTANT: set_page_config must be the very first Streamlit command
 st.set_page_config(page_title="Interactive FIFA Data Dashboard", layout="wide")
 
-# Inject custom CSS for Roboto font and blue slider styling
+# -----------------------------------------------------------------------------
+# Custom CSS to:
+#  - Use Roboto font
+#  - Override Streamlit slider colours to blue (if possible)
+#  - Adjust the title's style (larger font and negative top margin)
+#  - Pin the footer to the bottom
+# -----------------------------------------------------------------------------
 st.markdown("""
     <style>
     /* Import the Roboto font from Google Fonts */
@@ -14,31 +20,55 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Roboto', sans-serif;
     }
-    
-    /* Modern browsers: use accent-color for range inputs (if Streamlit uses native input) */
+
+    /* Title styling */
+    .big-title {
+        font-size: 3em !important;
+        font-weight: 700 !important;
+        margin-top: -40px !important; /* Move the title up */
+        margin-bottom: 20px !important;
+    }
+
+    /* Modern browsers: use accent-color for range inputs */
     input[type="range"] {
         accent-color: #007BFF;
     }
     
     /* Attempt to override Base Web slider styling used by Streamlit */
-    /* This targets slider elements rendered by Base Web (Streamlit’s slider) */
     [data-baseweb="slider"] * {
-        /* These custom properties might influence slider colours in some versions */
         --bds-primary: #007BFF !important;
         --bds-accent: #007BFF !important;
     }
-    
-    /* Fallback: try targeting potential slider classes (class names may change) */
+
+    /* Fallback for potential slider classes */
     .stSlider .css-1544gdk,
     .stSlider .css-1cuwqtl {
         background-color: #007BFF !important;
     }
+    
+    /* Footer styling */
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        z-index: 9999; /* Ensure footer stays on top */
+    }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("Interactive FIFA Data Dashboard")
+# -----------------------------------------------------------------------------
+# Custom Title
+# -----------------------------------------------------------------------------
+st.markdown('<h1 class="big-title">Interactive FIFA Data Dashboard</h1>', unsafe_allow_html=True)
 
-# Load the dataset with caching to speed up reloads
+# -----------------------------------------------------------------------------
+# Data Loading
+# -----------------------------------------------------------------------------
 @st.cache_data
 def load_data():
     df = pd.read_csv("FIFA DATA.csv")
@@ -46,24 +76,24 @@ def load_data():
 
 df = load_data()
 
-# -------------------------------
-# Sidebar for interactive filters
-# -------------------------------
+# -----------------------------------------------------------------------------
+# Sidebar for Interactive Filters
+# -----------------------------------------------------------------------------
 st.sidebar.header("Filter Options")
 
-# Filter: Age range slider
+# Filter: Age Range
 age_min, age_max = int(df['Age'].min()), int(df['Age'].max())
 age_range = st.sidebar.slider("Select Age Range", age_min, age_max, (age_min, age_max))
 
-# Filter: Overall rating range slider
+# Filter: Overall Rating Range
 overall_min, overall_max = int(df['OverallRating'].min()), int(df['OverallRating'].max())
 overall_range = st.sidebar.slider("Select Overall Rating Range", overall_min, overall_max, (overall_min, overall_max))
 
-# Filter: Nationality multiselect
+# Filter: Nationality
 nationality_options = sorted(df['Nationality'].unique())
 selected_nationalities = st.sidebar.multiselect("Select Nationalities", nationality_options, default=nationality_options)
 
-# Apply filters to the DataFrame
+# Apply Filters
 filtered_df = df[
     (df['Age'] >= age_range[0]) & (df['Age'] <= age_range[1]) &
     (df['OverallRating'] >= overall_range[0]) & (df['OverallRating'] <= overall_range[1]) &
@@ -72,18 +102,18 @@ filtered_df = df[
 
 st.sidebar.markdown(f"**Filtered Players:** {filtered_df.shape[0]}")
 
-# Option to show raw filtered data
+# Option to Show Raw Filtered Data
 if st.sidebar.checkbox("Show raw data"):
     st.subheader("Raw Data")
     st.dataframe(filtered_df)
 
-# Additional interactive options for the plots
+# Additional Interactive Options for the Plots
 bins = st.sidebar.slider("Number of bins for histogram", 10, 50, 20)
 bubble_scale = st.sidebar.slider("Bubble size scale factor", 10, 100, 30)
 
-# -------------------------------
-# Layout: Display plots in two columns
-# -------------------------------
+# -----------------------------------------------------------------------------
+# Layout: Display Plots in Two Columns
+# -----------------------------------------------------------------------------
 col1, col2 = st.columns(2)
 
 with col1:
@@ -113,9 +143,9 @@ with col2:
     fig2.update_layout(xaxis_title="Age", yaxis_title="Overall Rating")
     st.plotly_chart(fig2, use_container_width=True)
 
-# -------------------------------
+# -----------------------------------------------------------------------------
 # Bar Chart: Top 10 Clubs by Average Overall Rating
-# -------------------------------
+# -----------------------------------------------------------------------------
 st.subheader("Top 10 Clubs by Average Overall Rating")
 club_avg = filtered_df.groupby('Club', as_index=False)['OverallRating'].mean()
 club_avg = club_avg.sort_values(by='OverallRating', ascending=False).head(10)
@@ -129,6 +159,21 @@ fig3 = px.bar(
 )
 fig3.update_layout(xaxis_tickangle=-45)
 st.plotly_chart(fig3, use_container_width=True)
+
+# -----------------------------------------------------------------------------
+# Footer Section
+# -----------------------------------------------------------------------------
+footer = st.container()
+footer.markdown(
+    '''
+    <div class="footer">
+        <p>© 2025 Bloch AI LTD - All Rights Reserved. 
+        <a href="https://www.bloch.ai" style="color: white;">www.bloch.ai</a></p>
+    </div>
+    ''',
+    unsafe_allow_html=True
+)
+
 
 
 
