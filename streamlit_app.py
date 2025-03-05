@@ -91,7 +91,7 @@ st.markdown("""
 # -----------------------------------------------------------------------------
 # Custom Title
 # -----------------------------------------------------------------------------
-st.markdown('<h1 class="big-title">Interactive FIFA Data Dashboard</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="big-title">⚽ Interactive FIFA Data Dashboard ⚽</h1>', unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
 # Data Loading
