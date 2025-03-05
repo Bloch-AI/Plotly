@@ -1,3 +1,30 @@
+#**********************************************
+# Interactive FIFA Data Dashboard
+# Version 1.0
+# 5th March 2025
+# Jamie Crossman-Smith
+# jamie@bloch.ai
+#**********************************************
+# This Streamlit app demonstrates how you can filter, visualise, and explore data
+# from the FIFA dataset using interactive charts and controls.
+#
+# The app does the following:
+# 1. Loads and caches the FIFA data.
+# 2. Lets you filter players by Age, Overall Rating, and Nationality.
+# 3. Shows a histogram of player Overall Ratings, with an adjustable number of bins.
+# 4. Displays a scatter plot of Age vs. Overall Rating, where bubble sizes represent Value.
+# 5. Presents a bar chart of the Top 10 Clubs by average Overall Rating.
+# 6. Pins a custom footer at the bottom of the page.
+#
+# In simple terms, this dashboard uses sliders and multiselect options in the sidebar
+# to help you explore the data. The filters dynamically update all the charts so you
+# can quickly see how different subsets of the data compare.
+#
+# This type of interactive approach is common in modern data exploration, allowing
+# users to quickly spot trends and insights without having to write additional code.
+#
+#**********************************************
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -173,8 +200,3 @@ footer.markdown(
     ''',
     unsafe_allow_html=True
 )
-
-
-
-
-
