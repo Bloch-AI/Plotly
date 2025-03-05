@@ -1,4 +1,8 @@
 import streamlit as st
+
+# Set page configuration as the very first Streamlit command
+st.set_page_config(page_title="Interactive FIFA Data Dashboard", layout="wide")
+
 import pandas as pd
 import plotly.express as px
 
@@ -12,8 +16,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Configure the Streamlit page
-st.set_page_config(page_title="Interactive FIFA Data Dashboard", layout="wide")
 st.title("Interactive FIFA Data Dashboard")
 
 # Load the dataset with caching to speed up reloads
@@ -107,5 +109,6 @@ fig3 = px.bar(
 )
 fig3.update_layout(xaxis_tickangle=-45)
 st.plotly_chart(fig3, use_container_width=True)
+
 
 
