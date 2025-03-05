@@ -1,17 +1,33 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 # Set page configuration as the very first Streamlit command
 st.set_page_config(page_title="Interactive FIFA Data Dashboard", layout="wide")
 
-import pandas as pd
-import plotly.express as px
-
-# Inject custom CSS to use the Roboto font from Google Fonts
+# Inject custom CSS for Roboto font and blue slider styling
 st.markdown("""
     <style>
+    /* Import the Roboto font from Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     html, body, [class*="css"] {
         font-family: 'Roboto', sans-serif;
+    }
+    
+    /* Custom slider styling for WebKit browsers */
+    input[type="range"]::-webkit-slider-thumb {
+        background: #007BFF !important;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+        background: #007BFF !important;
+    }
+    
+    /* Custom slider styling for Mozilla browsers */
+    input[type="range"]::-moz-range-thumb {
+        background: #007BFF !important;
+    }
+    input[type="range"]::-moz-range-track {
+        background: #007BFF !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -109,6 +125,7 @@ fig3 = px.bar(
 )
 fig3.update_layout(xaxis_tickangle=-45)
 st.plotly_chart(fig3, use_container_width=True)
+
 
 
 
