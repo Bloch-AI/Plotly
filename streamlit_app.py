@@ -2,9 +2,18 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Inject custom CSS to use the Roboto font from Google Fonts
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Roboto', sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Configure the Streamlit page
 st.set_page_config(page_title="Interactive FIFA Data Dashboard", layout="wide")
-
 st.title("Interactive FIFA Data Dashboard")
 
 # Load the dataset with caching to speed up reloads
@@ -73,7 +82,7 @@ with col2:
         filtered_df,
         x='Age',
         y='OverallRating',
-        size='Value ',          # Make sure the column name matches exactly
+        size='Value ',          # Ensure the column name matches exactly
         color='Nationality',
         hover_name='Name',
         title="Player Age vs Overall Rating (Bubble size represents Value)",
@@ -98,4 +107,5 @@ fig3 = px.bar(
 )
 fig3.update_layout(xaxis_tickangle=-45)
 st.plotly_chart(fig3, use_container_width=True)
+
 
